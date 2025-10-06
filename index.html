@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WKB KODE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .header-last-modified {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            display: inline-block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Search Container */
+        .search-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .search-container:hover::before {
+            left: 100%;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            font-size: 1rem;
+            color: #ffffff;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-box:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Sheets Grid */
+        .sheets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sheet-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            group: hover;
+        }
+
+        .sheet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sheet-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(102, 126, 234, 0.1);
+        }
+
+        .sheet-card:hover::before {
+            opacity: 1;
+        }
+
+        .sheet-name {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sheet-info {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Loading and Error States */
+        .loading {
+            text-align: center;
+            font-size: 1.125rem;
+            padding: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Sheet Detail View */
+        .sheet-detail {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            margin-top: 1.5rem;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-button:active {
+            transform: translateY(0);
+        }
+
+        /* Table Styling */
+        .sheet-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .sheet-table th,
+        .sheet-table td {
+            padding: 1rem 0.75rem;
+            text-align: left;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+        }
+
+        .sheet-table th {
+            background: #f8fafc;
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .sheet-table td {
+            color: #334155;
+            background: #ffffff;
+        }
+
+        .sheet-table tbody tr:hover {
+            background: #f1f5f9;
+        }
+
+        .last-modified {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: rgba(59, 130, 246, 0.9);
+            font-weight: 600;
+        }
+
+        /* Export Buttons */
+        .export-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .export-btn:disabled {
+            background: rgba(156, 163, 175, 0.5);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Zoom Controls */
+        .zoom-controls {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .zoom-controls span {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        .zoom-controls button {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .zoom-controls button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        #zoomLevel {
+            min-width: 60px;
+            text-align: center;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header {
+                margin-bottom: 2rem;
+            }
+            
+            .sheets-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .sheet-card {
+                padding: 1.5rem;
+            }
+            
+            .sheet-detail {
+                padding: 1.5rem;
+                border-radius: 20px;
+            }
+            
+            .export-buttons {
+                flex-direction: column;
+            }
+            
+            .export-btn {
+                justify-content: center;
+            }
+            
+            .zoom-controls {
+                justify-content: center;
+            }
+            
+            .sheet-table {
+                font-size: 0.8125rem;
+            }
+            
+            .sheet-table th,
+            .sheet-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-container,
+            .sheet-detail {
+                border-radius: 16px;
+                padding: 1rem;
+            }
+            
+            .sheet-card {
+                padding: 1.25rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .sheet-table th,
+            .sheet-table td {
+                padding: 0.625rem 0.375rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 2s infinite;
+        }
+
+        /* Fade in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sheet-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .sheet-card:nth-child(2) { animation-delay: 0.1s; }
+        .sheet-card:nth-child(3) { animation-delay: 0.2s; }
+        .sheet-card:nth-child(4) { animation-delay: 0.3s; }
+    </style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DATA WKB KODE</h1>
+            <p>By PPIC</p>
+            <div id="headerLastModified" class="header-last-modified" style="display: none;">
+                <span id="headerLastModifiedText"></span>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Cari kode berdasarkan brand...">
+        </div>
+
+        <div id="loadingMessage" class="loading">
+            Memuat data...
+        </div>
+
+        <div id="errorMessage" class="error" style="display: none;"></div>
+
+        <div id="sheetsContainer" class="sheets-grid" style="display: none;"></div>
+
+        <div id="sheetDetail" class="sheet-detail">
+            <button class="back-button" onclick="showSheetsList()">← Kembali ke Daftar</button>
+            <div id="lastModified" class="last-modified" style="display: none;"></div>
+            <div class="export-buttons">
+                <button class="export-btn" onclick="exportToXLSX()" id="exportXLSX">
+                     Export to excel
+                </button>
+                
+                
+            </div>
+            <div id="sheetContent"></div>
+        </div>
+    </div>
+
+    <!-- Libraries for export functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        const API_KEY = 'AIzaSyCfnSym_wpPtzWL0P3-kslY1Y14B7nD-34';
+        const SPREADSHEET_ID = '1whAHBE7025tMLuxf6BO3AXb_fNHDppRrwUjaoGhrcX8';
+        
+        let allSheets = [];
+        let lastModifiedTime = null;
+        let currentSheetName = '';
+        let currentSheetData = [];
+
+        async function loadSpreadsheetData() {
+            try {
+                // Get spreadsheet metadata including last modified time
+                const metadataResponse = await fetch(
+                    `https://www.googleapis.com/drive/v3/files/${SPREADSHEET_ID}?fields=modifiedTime,name&key=${API_KEY}`
+                );
+                
+                if (metadataResponse.ok) {
+                    const metadata = await metadataResponse.json();
+                    lastModifiedTime = new Date(metadata.modifiedTime).toLocaleString('id-ID');
+                    
+                    // Show last modified in header
+                    document.getElementById('headerLastModified').style.display = 'block';
+                    document.getElementById('headerLastModifiedText').textContent = 
+                        `📅 Terakhir diperbarui : ${lastModifiedTime}`;
+                }
+
+                // Get spreadsheet sheets
+                const response = await fetch(
+                    `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}?key=${API_KEY}`
+                );
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                allSheets = data.sheets.map(sheet => ({
+                    title: sheet.properties.title,
+                    sheetId: sheet.properties.sheetId,
+                    rowCount: sheet.properties.gridProperties?.rowCount || 0,
+                    columnCount: sheet.properties.gridProperties?.columnCount || 0
+                }));
+
+                displaySheets(allSheets);
+                document.getElementById('loadingMessage').style.display = 'none';
+                document.getElementById('sheetsContainer').style.display = 'grid';
+
+            } catch (error) {
+                console.error('Error loading spreadsheet:', error);
+                document.getElementById('loadingMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').textContent = 
+                    'Gagal memuat data spreadsheet. Pastikan API key dan ID spreadsheet benar.';
+            }
+        }
+
+        function displaySheets(sheets) {
+            const container = document.getElementById('sheetsContainer');
+            container.innerHTML = '';
+
+            if (sheets.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: white; padding: 40px;">Tidak ada sheet yang ditemukan</div>';
+                return;
+            }
+
+            sheets.forEach(sheet => {
+                const card = document.createElement('div');
+                card.className = 'sheet-card';
+                card.innerHTML = `
+                    <div class="sheet-name">${sheet.title}</div>
+                  
+                    
+                `;
+                card.onclick = () => loadSheetData(sheet.title);
+                container.appendChild(card);
+            });
+        }
+
+        async function loadSheetData(sheetName) {
+            try {
+                document.getElementById('sheetsContainer').style.display = 'none';
+                document.getElementById('sheetDetail').style.display = 'block';
+                document.getElementById('sheetContent').innerHTML = '<div class="loading" style="color: #333;">Memuat data sheet...</div>';
+
+                // Show last modified time
+                if (lastModifiedTime) {
+                    document.getElementById('lastModified').style.display = 'block';
+                    document.getElementById('lastModified').innerHTML = `
+                        <strong>Diperbarui :</strong> ${lastModifiedTime}
+                    `;
+                }
+
+                // Get sheet data with formatting
+                const valuesResponse = await fetch(
+                    `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(sheetName)}?key=${API_KEY}`
+                );
+
+                // Get sheet formatting including borders
+                const formattingResponse = await fetch(
+                    `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}?ranges=${encodeURIComponent(sheetName)}&includeGridData=true&key=${API_KEY}`
+                );
+
+                if (!valuesResponse.ok) {
+                    throw new Error(`HTTP error! status: ${valuesResponse.status}`);
+                }
+
+                const valuesData = await valuesResponse.json();
+                let formattingData = null;
+                
+                if (formattingResponse.ok) {
+                    formattingData = await formattingResponse.json();
+                }
+
+                currentSheetName = sheetName;
+                currentSheetData = valuesData.values || [];
+                displaySheetData(sheetName, currentSheetData, formattingData);
+
+            } catch (error) {
+                console.error('Error loading sheet data:', error);
+                document.getElementById('sheetContent').innerHTML = 
+                    '<div class="error">Gagal memuat data sheet</div>';
+            }
+        }
+
+        function displaySheetData(sheetName, values, formattingData) {
+            const content = document.getElementById('sheetContent');
+            
+            if (values.length === 0) {
+                content.innerHTML = `
+                    <h2>${sheetName}</h2>
+                    <p>Sheet ini kosong atau tidak memiliki data.</p>
+                `;
+                return;
+            }
+
+            // Get border information and column widths from formatting data
+            let borders = {};
+            let columnWidths = {};
+            if (formattingData && formattingData.sheets && formattingData.sheets[0]) {
+                const sheet = formattingData.sheets[0];
+                
+                // Get column widths
+                if (sheet.properties && sheet.properties.gridProperties && sheet.properties.gridProperties.columnMetadata) {
+                    sheet.properties.gridProperties.columnMetadata.forEach((col, index) => {
+                        if (col.pixelSize) {
+                            columnWidths[index] = col.pixelSize;
+                        }
+                    });
+                }
+                
+                // Get borders
+                if (sheet.data && sheet.data[0]) {
+                    const gridData = sheet.data[0];
+                    if (gridData && gridData.rowData) {
+                        gridData.rowData.forEach((row, rowIndex) => {
+                            if (row.values) {
+                                row.values.forEach((cell, colIndex) => {
+                                    if (cell.effectiveFormat && cell.effectiveFormat.borders) {
+                                        const cellBorders = cell.effectiveFormat.borders;
+                                        borders[`${rowIndex}-${colIndex}`] = {
+                                            top: cellBorders.top && cellBorders.top.style !== 'NONE',
+                                            bottom: cellBorders.bottom && cellBorders.bottom.style !== 'NONE',
+                                            left: cellBorders.left && cellBorders.left.style !== 'NONE',
+                                            right: cellBorders.right && cellBorders.right.style !== 'NONE'
+                                        };
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+
+            function getCellBorderStyle(rowIndex, colIndex) {
+                const cellBorder = borders[`${rowIndex}-${colIndex}`];
+                if (!cellBorder) return '';
+                
+                let borderStyle = '';
+                if (cellBorder.top) borderStyle += 'border-top: 2px solid #999999; ';
+                if (cellBorder.bottom) borderStyle += 'border-bottom: 2px solid #999999; ';
+                if (cellBorder.left) borderStyle += 'border-left: 2px solid #999999; ';
+                if (cellBorder.right) borderStyle += 'border-right: 2px solid #999999; ';
+                
+                return borderStyle;
+            }
+
+            let tableHTML = `
+                <h2>📋 ${sheetName}</h2>
+                <div style="overflow-x: auto; touch-action: pan-x pan-y pinch-zoom;">
+                    <table class="sheet-table" style="transform-origin: top left; transition: transform 0.1s ease-out; table-layout: auto; white-space: nowrap;">
+            `;
+
+            // Add header row if exists
+            if (values.length > 0) {
+                tableHTML += '<thead><tr>';
+                const maxCols = Math.max(...values.map(row => row.length));
+                
+                for (let i = 0; i < maxCols; i++) {
+                    const cellValue = values[0][i] || '';
+                    const borderStyle = getCellBorderStyle(0, i);
+                    tableHTML += `<th style="${borderStyle}">${escapeHtml(cellValue)}</th>`;
+                }
+                tableHTML += '</tr></thead>';
+            }
+
+            // Add data rows
+            tableHTML += '<tbody>';
+            for (let i = 1; i < values.length; i++) {
+                tableHTML += '<tr>';
+                const maxCols = Math.max(...values.map(row => row.length));
+                
+                for (let j = 0; j < maxCols; j++) {
+                    const cellValue = values[i][j] || '';
+                    const borderStyle = getCellBorderStyle(i, j);
+                    tableHTML += `<td style="${borderStyle}">${escapeHtml(cellValue)}</td>`;
+                }
+                tableHTML += '</tr>';
+            }
+
+            tableHTML += '</tbody></table></div>';
+            
+            // Add zoom controls
+            tableHTML += `
+                <div class="zoom-controls">
+                    <span>🔍 Zoom:</span>
+                    <button onclick="zoomTable(0.8)">-</button>
+                    <span id="zoomLevel">100%</span>
+                    <button onclick="zoomTable(1.25)">+</button>
+                    <button onclick="resetZoom()" style="margin-left: 10px;">Reset</button>
+                    <button onclick="fitToScreen()" style="margin-left: 10px;">📐 Pas Layar</button>
+                </div>
+            `;
+            
+            content.innerHTML = tableHTML;
+            
+            // Initialize zoom functionality and auto-fit to screen
+            initializeZoom();
+            
+            // Auto-fit table to screen when first loaded
+            setTimeout(() => {
+                fitToScreen();
+            }, 200);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showSheetsList() {
+            document.getElementById('sheetDetail').style.display = 'none';
+            document.getElementById('sheetsContainer').style.display = 'grid';
+        }
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredSheets = allSheets.filter(sheet => 
+                sheet.title.toLowerCase().includes(searchTerm)
+            );
+            displaySheets(filteredSheets);
+        });
+
+        // Export functions
+        function exportToXLSX() {
+            if (currentSheetData.length === 0) {
+                alert('Tidak ada data untuk diekspor');
+                return;
+            }
+
+            try {
+                // Create workbook and worksheet
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(currentSheetData);
+                
+                // Add worksheet to workbook
+                XLSX.utils.book_append_sheet(wb, ws, currentSheetName);
+                
+                // Generate filename with timestamp
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const filename = `${currentSheetName}_${timestamp}.xlsx`;
+                
+                // Save file
+                XLSX.writeFile(wb, filename);
+                
+            } catch (error) {
+                console.error('Error exporting XLSX:', error);
+                alert('Gagal mengekspor file XLSX');
+            }
+        }
+
+        function exportToPDF() {
+            if (currentSheetData.length === 0) {
+                alert('Tidak ada data untuk diekspor');
+                return;
+            }
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('l', 'mm', 'a4'); // landscape orientation
+                
+                // Add title
+                doc.setFontSize(16);
+                doc.text(currentSheetName, 14, 15);
+                
+                // Add last modified info
+                if (lastModifiedTime) {
+                    doc.setFontSize(10);
+                    doc.text(`Terakhir diubah: ${lastModifiedTime}`, 14, 25);
+                }
+                
+                // Prepare table data
+                const headers = currentSheetData[0] || [];
+                const rows = currentSheetData.slice(1);
+                
+                // Add table
+                doc.autoTable({
+                    head: [headers],
+                    body: rows,
+                    startY: 35,
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 2,
+                    },
+                    headStyles: {
+                        fillColor: [102, 126, 234],
+                        textColor: 255,
+                        fontStyle: 'bold'
+                    },
+                    alternateRowStyles: {
+                        fillColor: [249, 250, 251]
+                    },
+                    margin: { top: 35, right: 14, bottom: 20, left: 14 },
+                });
+                
+                // Generate filename with timestamp
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const filename = `${currentSheetName}_${timestamp}.pdf`;
+                
+                // Save file
+                doc.save(filename);
+                
+            } catch (error) {
+                console.error('Error exporting PDF:', error);
+                alert('Gagal mengekspor file PDF');
+            }
+        }
+
+        // Zoom functionality
+        let currentZoom = 1;
+        
+        function zoomTable(factor) {
+            currentZoom *= factor;
+            currentZoom = Math.max(0.2, Math.min(1.5, currentZoom)); // Limit zoom between 20% and 150%
+            
+            const table = document.querySelector('.sheet-table');
+            if (table) {
+                table.style.transform = `scale(${currentZoom})`;
+                updateZoomDisplay();
+            }
+        }
+        
+        function resetZoom() {
+            currentZoom = 1;
+            const table = document.querySelector('.sheet-table');
+            if (table) {
+                table.style.transform = 'scale(1)';
+                updateZoomDisplay();
+            }
+        }
+        
+        function fitToScreen() {
+            const table = document.querySelector('.sheet-table');
+            const container = document.querySelector('#sheetContent div[style*="overflow-x"]');
+            
+            if (!table || !container) return;
+            
+            // Reset zoom first
+            table.style.transform = 'scale(1)';
+            
+            // Wait for layout to settle
+            setTimeout(() => {
+                const tableWidth = table.scrollWidth;
+                const containerWidth = container.clientWidth;
+                
+                if (tableWidth > containerWidth) {
+                    // Calculate zoom to fit
+                    const fitZoom = (containerWidth - 40) / tableWidth; // 40px padding
+                    currentZoom = Math.max(0.2, Math.min(1.5, fitZoom));
+                    
+                    table.style.transform = `scale(${currentZoom})`;
+                    updateZoomDisplay();
+                } else {
+                    currentZoom = 1;
+                    updateZoomDisplay();
+                }
+            }, 100);
+        }
+        
+        function updateZoomDisplay() {
+            const zoomDisplay = document.getElementById('zoomLevel');
+            if (zoomDisplay) {
+                zoomDisplay.textContent = Math.round(currentZoom * 100) + '%';
+            }
+        }
+        
+        function initializeZoom() {
+            const tableContainer = document.querySelector('#sheetContent div[style*="overflow-x"]');
+            if (!tableContainer) return;
+            
+            let initialDistance = 0;
+            let initialZoom = currentZoom;
+            
+            // Touch events for pinch zoom
+            tableContainer.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    initialDistance = Math.hypot(
+                        touch1.clientX - touch2.clientX,
+                        touch1.clientY - touch2.clientY
+                    );
+                    initialZoom = currentZoom;
+                }
+            });
+            
+            tableContainer.addEventListener('touchmove', function(e) {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    const currentDistance = Math.hypot(
+                        touch1.clientX - touch2.clientX,
+                        touch1.clientY - touch2.clientY
+                    );
+                    
+                    if (initialDistance > 0) {
+                        const scale = currentDistance / initialDistance;
+                        currentZoom = initialZoom * scale;
+                        currentZoom = Math.max(0.2, Math.min(1.5, currentZoom));
+                        
+                        const table = document.querySelector('.sheet-table');
+                        if (table) {
+                            table.style.transform = `scale(${currentZoom})`;
+                            updateZoomDisplay();
+                        }
+                    }
+                }
+            });
+            
+            // Mouse wheel zoom (Ctrl + scroll)
+            tableContainer.addEventListener('wheel', function(e) {
+                if (e.ctrlKey) {
+                    e.preventDefault();
+                    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+                    zoomTable(zoomFactor);
+                }
+            });
+        }
+
+        // Load data when page loads
+        loadSpreadsheetData();
+    </script>
+  </body>
+</html>
