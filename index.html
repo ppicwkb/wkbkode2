@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WKB KODE</title>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="login.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DATA WKB KODE</h1>
+            <p>By PPIC</p>
+            <div id="headerLastModified" class="header-last-modified" style="display: none;">
+                <span id="headerLastModifiedText"></span>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Cari kode berdasarkan brand...">
+        </div>
+
+        <div id="loadingMessage" class="loading">
+            Memuat data...
+        </div>
+
+        <div id="errorMessage" class="error" style="display: none;"></div>
+
+        <div id="sheetsContainer" class="sheets-grid" style="display: none;"></div>
+
+        <div id="sheetDetail" class="sheet-detail">
+            <button class="back-button" onclick="showSheetsList()">← Kembali ke Daftar</button>
+            <div id="lastModified" class="last-modified" style="display: none;"></div>
+            <div class="export-buttons">
+                <button class="export-btn" onclick="exportToXLSX()" id="exportXLSX">
+                     Export to excel
+                </button>
+                
+                
+            </div>
+            <div id="sheetContent"></div>
+        </div>
+    </div>
+
+    <!-- Libraries for export functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+     <script defer src="script.js"></script>
+     <script defer src="login.js"></script>
+
+  </body>
+</html>
